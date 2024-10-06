@@ -15,14 +15,22 @@ const apiKey = "6511e14723ad8cb6f243ece1366c5deb";
 const App = () => {
   const [cityData, setCityData] = useState(null);
   const [cityName, setCityName] = useState("");
+  const [error, setError] = useState(null);
 
   const fetchWeather = async (name = "Bishkek") => {
     try {
       const res = await fetch(`${_baseUrl}${name}&appid=${apiKey}`);
       const data = await res.json();
-      setCityData(data);
+      if (data.cod === "404") {
+        setError("City not found");
+        setCityData(null);
+      } else {
+        setCityData(data);
+        setError(null);
+      }
     } catch (err) {
       console.log(err);
+      setError("Failed to fetch data");
     }
   };
 
@@ -51,9 +59,24 @@ const App = () => {
     }
   };
 
+  // Enter баскычын басканда чакырылуучу функция
+  const handleKeyPress = (event) => {
+    if (event.key === "Enter") {
+      fetchWeather(cityName);
+    }
+  };
+
   useEffect(() => {
     fetchWeather();
   }, []);
+
+  if (error) {
+    return (
+      <h1 style={{ textAlign: "center", paddingTop: "10rem", color: "red" }}>
+        {error}
+      </h1>
+    );
+  }
 
   if (!cityData) {
     return (
@@ -61,9 +84,6 @@ const App = () => {
         Loading...
       </h1>
     );
-  }
-  if (cityData.cod === 404) {
-    return <h1>{cityData.message}</h1>;
   }
 
   return (
@@ -83,11 +103,12 @@ const App = () => {
               className="w-full outline-none sm:w-[60%] md:w-[40%] lg:w-[20%] p-2 mt-4 rounded-md border-none"
               value={cityName}
               onChange={(e) => setCityName(e.target.value)}
+              onKeyDown={handleKeyPress} 
               type="text"
               placeholder="Enter the name of the city"
             />
             <button
-              className=" absolute top-[76px]  md:left-[30rem] lg:left-[54rem] md:top-[73px] sm:left-3 left-80 "
+              className="absolute outline-none top-[76px] md:left-[30rem] lg:left-[54rem] md:top-[73px] sm:left-3 left-80"
               onClick={() => fetchWeather(cityName)}
             >
               <FontAwesomeIcon icon={faSearch} />
