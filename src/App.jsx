@@ -6,6 +6,8 @@ import Clear from "./assets/img/clear.png";
 import Sun from "./assets/img/sun.png";
 import Snow from "./assets/img/snow.png";
 import Mist from "./assets/img/mist.png";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSearch } from "@fortawesome/free-solid-svg-icons";
 
 const _baseUrl = "https://api.openweathermap.org/data/2.5/weather?q=";
 const apiKey = "6511e14723ad8cb6f243ece1366c5deb";
@@ -17,9 +19,7 @@ const App = () => {
   const fetchWeather = async (name = "Bishkek") => {
     try {
       const res = await fetch(`${_baseUrl}${name}&appid=${apiKey}`);
-
       const data = await res.json();
-      console.log(data);
       setCityData(data);
     } catch (err) {
       console.log(err);
@@ -62,7 +62,7 @@ const App = () => {
       </h1>
     );
   }
-  if (cityData.cod == 404) {
+  if (cityData.cod === 404) {
     return <h1>{cityData.message}</h1>;
   }
 
@@ -73,112 +73,50 @@ const App = () => {
         height: "200px",
       }}
     >
-      <div className="container">
+      <div className="container mx-auto px-4">
         <div>
-          <div>
-            <h1
-              style={{ paddingTop: "3%", color: "white" }}
-              className="text-3xl"
-            >
+          <div className="relative">
+            <h1 className="text-3xl sm:text-xl md:text-2xl pt-4 text-white">
               Weather forecast
             </h1>
             <input
-            className="w-[20%] sm-w-[40%] sm-custom:w-[60%]"
-              style={{
-                
-                height: "35%",
-                borderRadius: "3px",
-                padding: "10px",
-                marginTop: "2%",
-                border: "none",
-              }}
+              className="w-full outline-none sm:w-[60%] md:w-[40%] lg:w-[20%] p-2 mt-4 rounded-md border-none"
               value={cityName}
               onChange={(e) => setCityName(e.target.value)}
               type="text"
               placeholder="Enter the name of the city"
             />
             <button
-              style={{
-               
-                height: "42px",
-                borderRadius: "3px",
-                border: "none",
-                background: "rgba(237, 48, 82, 1)",
-                color: "white",
-              }}
-              className="w-[10%] md:w-[10%] sm-custom:w-[20%]"
+              className=" absolute top-[76px]  md:left-[30rem] md:top-[73px] sm:left-3 left-80 "
               onClick={() => fetchWeather(cityName)}
             >
-              Show
+              <FontAwesomeIcon icon={faSearch} />
             </button>
           </div>
-          <div className="w-full xl:w-[30%] lg:w-[38%]  md:w-[49%]  sm:w-[50%]  "
-    style={{
-        height: "325%",
-        margin:"auto",
-        marginTop:"10rem",
-        // marginLeft: "36%",
-        paddingTop: "2%",
-        display: "flex",
-        zIndex: "99",
-        backgroundColor: "white",
-        boxShadow: "2px 3px 10px 10px rgba(190, 188, 188, 0.183)",
-        borderRadius: "6%",
-        border: "1px solid grey",
-        gap: "2rem",
-        border: "none",
-    }}
->
-          
-            <div style={{ padding: "7%" }}>
-              <h3
-                style={{ width: "102px", fontSize: "38px", fontWeight: "800" }}
-              >
+          <div className="w-full lg:w-[30%] md:w-[40%] sm:w-[50%] mx-auto mt-40 p-6 bg-white shadow-lg rounded-lg flex gap-4">
+            <div className="flex-1">
+              <h3 className="text-4xl sm:text-3xl md:text-2xl font-bold">
                 {cityData.name}
               </h3>
-              <div style={{ display: "flex" }}>
-                <span
-                  style={{
-                    fontFamily: "Rubik",
-                    fontSize: "70px",
-                    fontWeight: "400",
-                  }}
-                >
-                  {Math.floor(cityData.main.temp - 273.15)}{" "}
+              <div className="flex">
+                <span className="text-6xl sm:text-5xl pl-3 ">
+                  {Math.floor(cityData.main.temp - 273.15)}
                 </span>
-                <span
-                  style={{
-                    fontFamily: "Rubik",
-                    fontSize: "80px",
-                    fontWeight: "400",
-                    lineHeight: "92px",
-                    textAlign: "left",
-                  }}
-                >
-                  °c
-                </span>
+                <span className="text-7xl sm:text-6xl">°C</span>
               </div>
-              <div style={{ paddingTop: "10%" }}>
-                <div
-                  style={{
-                    fontFamily: "Rubik",
-                    fontSize: "20px",
-                    fontWeight: "400",
-                    lineHeight: "23.7px",
-                    textAlign: "left",
-                  }}
-                >
+              <div className="pt-10">
+                <div className="text-lg">
                   <p>{cityData.weather[0].main}</p>
-                  <p>Wind: {cityData.wind.speed} km</p>
+                  <p>Wind: {cityData.wind.speed} km/h</p>
                   <p>Country: {cityData.sys.country}</p>
                 </div>
               </div>
             </div>
             <div>
               <img
-                style={{ paddingTop: "70%" }}
+                className="pt-10 sm:pt-16 md:pt-10"
                 src={weatherImg(cityData.weather[0].main)}
-                alt=""
+                alt="weather-icon"
               />
             </div>
           </div>

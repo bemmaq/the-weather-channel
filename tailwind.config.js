@@ -7,9 +7,7 @@ export default {
   theme: {
    
     extend: {
-      screens: {
-        'sm-custom': '390px',  // Adding custom screen size
-      },
+      
     },
   },
   plugins: [],
