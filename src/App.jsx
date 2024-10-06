@@ -87,7 +87,7 @@ const App = () => {
               placeholder="Enter the name of the city"
             />
             <button
-              className=" absolute top-[76px]  md:left-[30rem] md:top-[73px] sm:left-3 left-80 "
+              className=" absolute top-[76px]  md:left-[30rem] lg:left-[54rem] md:top-[73px] sm:left-3 left-80 "
               onClick={() => fetchWeather(cityName)}
             >
               <FontAwesomeIcon icon={faSearch} />
